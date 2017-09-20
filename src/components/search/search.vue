@@ -1,18 +1,15 @@
 <template lang="pug">
-	#search
+	#search(@click="hidePanel")
 		.header-input
 			i.iconfont.icon-arrow-left
 			input(v-model="keyword" @keyup.enter="searchMusic(keyword)" type="input" placeholder="搜索音乐、歌手")
 		.result
-			ul
-				li(v-for="song in songs" @click="play(song)")
-					p.title {{song.name}}
-					span.singer {{song.ar[0].name}}&nbsp;-&nbsp;
-					span.album {{song.al.name}}
+			Songlist(:songs="songs")
 </template>
 
 <script>
 import netMusic from '../../api/netMusic.js'
+import Songlist from '../songlist/songlist.vue'
 export default {
 	name: 'search',
 	data() {
@@ -25,11 +22,18 @@ export default {
 		searchMusic(keyword) {
 			netMusic.searchMusic(keyword,(songs) => {
 				this.songs = songs
+				this.$store.commit('setPlayList',this.songs)
 			})
 		},
-		play(song) {
-			this.$store.commit('play',song)
+		hidePanel(){
+			let panel = document.querySelector('.panel')
+			if(panel.style.display === 'block'){
+				panel.style.display = 'none'
+			}
 		}
+	},
+	components: {
+		Songlist
 	}
 }
 </script>
@@ -47,6 +51,7 @@ export default {
 	line-height: 1.4rem;
 	padding-left: 10px;
 	background: #fff;
+	z-index: 100;
 }
 .header-input input{
 	position: absolute;
@@ -65,20 +70,8 @@ i.iconfont{
 .result{
 	width: 10rem;
 	padding-top: 1.4rem;
+	padding-bottom: 1.6rem;
 	font-size: .5rem;
 	overflow: scroll;
-}
-
-.result li{
-	padding: 10px 8px;
-	border-bottom: 1px solid #ddd;
-}
-.result p.title{
-	margin-bottom: 5px;
-	color: #000;
-}
-.result span{
-	color: #898989;
-	font-size: .4rem;
 }
 </style>

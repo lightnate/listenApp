@@ -13,8 +13,10 @@
       :currentTime = "currentTime"
       :duration = "duration"
       :isPlaying = "isPlaying"
-      @jump = "jump",
+      @jump = "jump"
       @togglePlay = "togglePlay"
+      @playPre = "playPre"
+      @playNext = "playNext"
       @dragging = "dragging"
       @drag = "drag"
     )

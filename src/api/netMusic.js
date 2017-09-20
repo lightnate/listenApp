@@ -2,27 +2,27 @@ import netMusicApi from './netMusicApi.js'
 
 export default {
     searchMusic(keyword,fn) {
-        let song = {
-                //专辑信息
-                al: {
-                    id: 0,
-                    name: '',
-                    picUrl: ''
-                },
-                //歌手信息
-                ar: [{
-                    id: 0,
-                    name: ''
-                }],
-                //歌曲id
-                id: 0,
-                //歌曲名称
-                name: ''
-            },
+        let song = {},
             songs = []
         netMusicApi.searchMusic(keyword, result => {
             for(let i = 0;i < result.songs.length; i++){
-                song = result.songs[i]
+                song = {
+                    //专辑信息
+                    al: {
+                        id: result.songs[i].al.id,
+                        name: result.songs[i].al.name,
+                        picUrl: result.songs[i].al.picUrl
+                    },
+                    //歌手信息
+                    ar: [{
+                        id: result.songs[i].ar[0].id,
+                        name: result.songs[i].ar[0].name
+                    }],
+                    //歌曲id
+                    id: result.songs[i].id,
+                    //歌曲名称
+                    name: result.songs[i].name
+                }
                 songs.push(song)
             }
             fn(songs)

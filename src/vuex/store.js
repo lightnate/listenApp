@@ -22,6 +22,9 @@ const state = {
     //歌曲名称
     name: ''
   },
+  playList: [],
+  recentPlayed: [],
+  myFavorite: [],
 	url: '',
 	nolyric: false,
 	lyrics: [],
@@ -43,7 +46,10 @@ const mutations = {
 				state.nolyric = true
 			}
     })
-	},
+  },
+  setPlayList(state, songs){
+    state.playList = songs
+  },
 	isPlaying(state,bool){
 		state.isPlaying = bool
 	},
@@ -52,6 +58,14 @@ const mutations = {
   },
   setAlbumId(state, albumId) {
     state.albumId = albumId
+  },
+  setLocalStorage(state,payload) {
+    if(payload.recentPlayed){
+      state.recentPlayed = payload.recentPlayed
+    }
+    if(payload.myFavorite){
+      state.myFavorite = payload.myFavorite
+    }
   }
 }
 

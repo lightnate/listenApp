@@ -1,5 +1,5 @@
 <template lang="pug">
-	#album
+	#album(@click="hidePanel")
 		.album-header
 			i.iconfont.icon-arrow-left(@click="back")
 			p 专辑
@@ -9,14 +9,12 @@
 				p.title {{album.name}}
 				p.singer 歌手:{{album.artist.name}}
 		.album-songs
-			ul
-				li(v-for="song in songs" @click="play(song)")
-					p.title {{song.name}}
-					p.singer {{song.ar[0].name}}
+			Songlist(:songs="songs" :showAlbum="false")
 </template>
 
 <script>
 import netMusic from '../../api/netMusic.js'
+import Songlist from '../songlist/songlist.vue'
 export default {
 	name: 'album',
 	data() {
@@ -36,13 +34,23 @@ export default {
 		},
 		play(song) {
 			this.$store.commit('play',song)
+		},
+		hidePanel(){
+			let panel = document.querySelector('.panel')
+			if(panel.style.display === 'block'){
+				panel.style.display = 'none'
+			}
 		}
 	},
 	activated(){
 		netMusic.getAlbum(this.albumId, album => {
 				this.album = album.album
 				this.songs = album.songs
+				this.$store.commit('setPlayList',this.songs)
 			})
+	},
+	components: {
+		Songlist
 	}
 }
 </script>
@@ -98,18 +106,5 @@ i.iconfont{
 	padding-top: 1.4rem;
 	font-size: .5rem;
 	overflow: scroll;
-}
-.album-songs li{
-	padding: 10px 8px;
-	border-bottom: 1px solid #ddd;
-	text-align: left;
-}
-.album-songs p.title{
-	margin-bottom: 5px;
-	color: #000;
-}
-.album-songs p.singer{
-	color: #898989;
-	font-size: .4rem;
 }
 </style>

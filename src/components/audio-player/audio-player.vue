@@ -13,9 +13,9 @@
 			span.current-time {{ formTime(currentTime) }}
 			span.total-time {{ formTime(duration) }}
 		.btns
-			i.iconfont.icon-shangyibu
-			i.iconfont(:class = "isPlaying" @touchstart="togglePlay")
-			i.iconfont.icon-xiayibu
+			i.iconfont.icon-shangyibu(@click="playPre")
+			i.iconfont(:class = "isPlaying" @click="togglePlay")
+			i.iconfont.icon-xiayibu(@click="playNext")
 </template>
 
 <script>
@@ -64,6 +64,12 @@ export default {
 		togglePlay(){
 			this.$emit('togglePlay')
 		},
+		playPre(){
+			this.$emit('playPre')
+		},
+		playNext(){
+			this.$emit('playNext')
+		},
 		tstart(e) {
 			this.barWidth = this.$refs.bar.getBoundingClientRect().width
 			this.nowWidth = Number(this.$refs.now.style.width.replace('%','')) / 100 * this.barWidth 
@@ -109,7 +115,7 @@ export default {
 .progress-bar{
 	position: relative;
 	width: 100%;
-	height: .125rem;
+	height: .15rem;
 	margin-bottom: 10px;
 	background: #eee;
 }
@@ -127,11 +133,11 @@ export default {
 }
 .progress-now .progress-point{
 	position: absolute;
-	right: -0.125rem;
+	right: -0.18rem;
 	top: 50%;
 	transform: translateY(-50%);
-	width: .25rem;
-	height: .25rem;
+	width: .3rem;
+	height: .3rem;
 	background: #000;
 	border-radius: 50%;
 }	

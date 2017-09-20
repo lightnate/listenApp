@@ -6,7 +6,7 @@ export default {
   data() {
     return {
       currentTime: 0,
-      duration: 1000
+      duration: 0
     }
   },
   components: {
@@ -36,10 +36,11 @@ export default {
     },
   },
   mounted() {
-    //设置app的高度
-    var app = document.getElementById('app'),
-      h = window.innerHeight
+    // 设置app的高度
+    let app = document.getElementById('app'),
+        h = document.documentElement.clientHeight
     app.style.height = `${h}px`
+
     let audio = document.querySelector('#audio-player audio'),
       progress_loaded = document.querySelector('#audio-player .progress-loaded'),
       progress_now = document.querySelector('#audio-player .progress-now')
@@ -93,8 +94,12 @@ export default {
         }
       }, 500)
     })
+    audio.addEventListener('ended', () => {
+      this.playNext()
+    })
   },
   methods: {
+    //点击进度条跳跃播放
     jump(e) {
       let audio = document.querySelector('#audio-player audio'),
         progress_now = document.querySelector('#audio-player .progress-now'),
@@ -114,6 +119,77 @@ export default {
         this.$store.commit('isPlaying', true)
       }
     },
+    playPre(){
+      let id = this.$store.state.song.id
+      let myFavorite = JSON.parse(localStorage.getItem('myFavorite'))
+      let playList = this.$store.state.playList
+      let found = false
+      for(let i = 0; i < playList.length; i++){
+        if(playList[i].id == id){
+          found = true
+          if(i === 0){
+            this.$store.commit('play', playList[playList.length - 1])
+            this.addRecentPlayed()
+            break
+          }else{
+            this.$store.commit('play', playList[i - 1])
+            this.addRecentPlayed()
+            break
+          }
+        }
+      }
+      if(!found){
+        for(let i = 0; i < myFavorite.length; i++){
+          if(myFavorite[i].id == id){
+            if(i === 0){
+              this.$store.commit('play', myFavorite[myFavorite.length - 1])
+              this.addRecentPlayed()
+              break
+            }else{
+              this.$store.commit('play', myFavorite[i - 1])
+              this.addRecentPlayed()
+              break
+            }
+          }
+        }
+      }
+    },
+    playNext(){
+      let id = this.$store.state.song.id
+      let myFavorite = JSON.parse(localStorage.getItem('myFavorite'))
+      let playList = this.$store.state.playList
+      let found = false
+      for(let i = 0; i < playList.length; i++){
+        if(playList[i].id == id){
+          found = true
+          if(i === playList.length - 1){
+            this.$store.commit('play', playList[0])
+            this.addRecentPlayed()
+            break
+          }else{
+            this.$store.commit('play', playList[i + 1])
+            this.addRecentPlayed()
+            break
+          }
+        }
+      }
+      if(!found){
+        for(let i = 0; i < myFavorite.length; i++){
+          if(myFavorite[i].id == id){
+            if(i === myFavorite.length - 1){
+              this.$store.commit('play', myFavorite[0])
+              this.addRecentPlayed()
+              break
+            }else{
+              this.$store.commit('play', myFavorite[i + 1])
+              this.addRecentPlayed()
+              break
+            }
+          }
+        }
+      }
+    },
+    //拖动播放
     drag(percent) {
       let audio = document.querySelector('#audio-player audio')
       audio.currentTime = audio.duration * percent
@@ -121,6 +197,34 @@ export default {
     dragging(percent) {
       let audio = document.querySelector('#audio-player audio')
       this.currentTime = audio.duration * percent
+    },
+    addRecentPlayed() {
+      let song = this.$store.state.song
+      let recentPlayed = []
+      if(localStorage){
+				if(localStorage.getItem('recentPlayed')){
+					recentPlayed = JSON.parse(localStorage.getItem('recentPlayed'))
+					//查找播放记录是否存在该歌曲
+					for(let i = 0; i < recentPlayed.length; i++){
+						//左边为string数字，右边为number数字，用==
+						if(song.id == recentPlayed[i].id){
+							recentPlayed.splice(i,1)
+							break
+						}
+					}
+					recentPlayed.unshift(song)
+					//只保存50条播放记录
+					if(recentPlayed.length > 50){
+						recentPlayed.pop()
+					}
+					localStorage.setItem('recentPlayed',JSON.stringify(recentPlayed))
+					this.$store.commit('setLocalStorage',{recentPlayed})
+				}else{
+					recentPlayed.unshift(song)
+					localStorage.setItem('recentPlayed',JSON.stringify(recentPlayed))
+					this.$store.commit('setLocalStorage',{recentPlayed})
+				}
+			}
     }
   }
 }

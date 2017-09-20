@@ -36,6 +36,9 @@ i.iconfont{
 }
 .head p.title,.head p.singer{
 	line-height: .6rem;
+	overflow: hidden;
+	text-overflow:ellipsis;
+	white-space: nowrap;
 }
 .head p.title{
 	margin-top: .3398rem;
