@@ -1,0 +1,21 @@
+<!DOCTYPE html><html><head><meta charset=utf-8><meta name=renderer content=webkit><meta http-equiv=X-UA-Compatible content="IE=edge"><script>(function(){
+        var ua = navigator.userAgent.toLowerCase()
+        var mobile = ua.indexOf('android') > -1 ? true : (ua.indexOf('iphone') > -1 ? true : (ua.indexOf('ipad') > -1 ? true : false))
+        if(mobile){
+          var h=document.getElementsByTagName('head')[0]
+          var m = document.createElement('meta')
+          m.setAttribute('name','viewport')
+          m.setAttribute('content','width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no')
+          h.appendChild(m)
+        }
+
+        var html = document.documentElement,
+            w = html.clientWidth
+        //10rem为屏幕宽度
+        html.style.fontSize = w / 10 + 'px'
+        // window.addEventListener('resize', function(){
+        //   var app = document.getElementById('app')
+        //   app.style.height = html.clientHeight + 'px'
+        //   html.style.fontSize = html.clientWidth / 10 + 'px'
+        // })
+      })()</script><title>listen-app-player</title><link href=./static/css/app.b96cb30cdf478b6140a185c7fa8c428c.css rel=stylesheet></head><body><div id=app></div><script type=text/javascript src=./static/js/manifest.bd94cd2e660441313788.js></script><script type=text/javascript src=./static/js/vendor.39cf55ce4b448f221f45.js></script><script type=text/javascript src=./static/js/app.491a90782009244ba5a8.js></script></body></html>
