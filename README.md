@@ -1,6 +1,7 @@
 # listen-app-player
 
 > a simple web music player
+### [在线预览](https://lightnate.github.io/listenApp/)
 
 ## 注意：请使用手机端或者Chrome的设备模拟器浏览页面
 
