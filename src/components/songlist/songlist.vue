@@ -40,7 +40,18 @@ export default {
 	},
 	methods: {
 		play(song) {
-			this.$store.commit('play',song)
+			this.$store.commit('play',{
+				song: song,
+				playSong: () => {
+					let audio = document.querySelector('#audio-player audio')
+					let id = setInterval(() => {
+						if(audio.readyState === 4){
+							audio.play()
+							clearInterval(id)
+						}
+					},100)
+				}
+			})
 			let recentPlayed = []
 			if(localStorage){
 				if(localStorage.getItem('recentPlayed')){
