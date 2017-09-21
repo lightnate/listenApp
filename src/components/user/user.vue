@@ -56,6 +56,9 @@ export default {
 			let grandparent = e.target.parentElement.parentElement
 			if(parent.getAttribute('class') === 'recent-played' || grandparent.getAttribute('class') === 'recent-played'){
 				this.unfold.recentPlayed = !this.unfold.recentPlayed
+				if(this.unfold.recentPlayed){
+					this.isFixed = false
+				}
 			}
 			if(parent.getAttribute('class') === 'my-favorite' || grandparent.getAttribute('class') === 'my-favorite'){
 				this.unfold.myFavorite = !this.unfold.myFavorite
