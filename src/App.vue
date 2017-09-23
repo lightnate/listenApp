@@ -7,6 +7,7 @@
         router-view
     Bar.buttom-bar(v-show="!inPlayPage && !inAlbumPage")
     AudioPlayer#audio-player(
+      :autoplay="true"
       v-show="inPlayPage"
       :src="src"
       :currentTime = "currentTime"

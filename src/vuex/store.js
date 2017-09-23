@@ -33,13 +33,12 @@ const state = {
   albumId: 0
 }
 const mutations = {
-  play(state, payload) {
-    state.song = payload.song
-    netMusic.getUrl(payload.song.id, url => {
+  play(state, song) {
+    state.song = song
+    netMusic.getUrl(song.id, url => {
       state.url = url
-      payload.playSong()
     })
-    netMusic.getLyric(payload.song.id, lyrics => {
+    netMusic.getLyric(song.id, lyrics => {
 			if(lyrics){
         state.lyrics = lyrics
         state.nolyric = false
